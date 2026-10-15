@@ -74,7 +74,8 @@
             width: 100%;
         }
 
-        .menu-card {
+        /* CHANGED: Swapped cards to authentic HTML button behaviors */
+        button.menu-card {
             background: var(--card-bg);
             border: 3px solid #444;
             border-radius: 12px;
@@ -84,18 +85,23 @@
             align-items: center;
             cursor: pointer;
             padding: 30px 10px;
+            font-family: inherit;
+            color: #ffffff;
             transition: transform 0.2s;
         }
 
-        .menu-card:hover {
+        button.menu-card:hover {
             transform: scale(1.03);
         }
 
-        .menu-card.truck-theme { border-color: var(--bright-orange); }
-        .menu-card.dino-theme { border-color: var(--dino-green); }
-        .menu-card.con-theme { border-color: var(--sky-blue); }
+        button.menu-card:active {
+            transform: scale(0.98);
+        }
 
-        /* Pure CSS High-Visibility Shape Badges */
+        button.menu-card.truck-theme { border-color: var(--bright-orange); }
+        button.menu-card.dino-theme { border-color: var(--dino-green); }
+        button.menu-card.con-theme { border-color: var(--sky-blue); }
+
         .shape-badge {
             width: 80px;
             height: 80px;
@@ -227,18 +233,18 @@
 
     <!-- Main Entry Screen Grid Selection -->
     <div id="menu-screen">
-        <div class="menu-card truck-theme" onclick="startLevel('trucks')">
+        <button class="menu-card truck-theme" onclick="startLevel('trucks')">
             <div class="shape-badge badge-circle"></div>
             <div class="card-label">MONSTER TRUCK<br>SOUNDS</div>
-        </div>
-        <div class="menu-card dino-theme" onclick="startLevel('dinos')">
+        </button>
+        <button class="menu-card dino-theme" onclick="startLevel('dinos')">
             <div class="shape-badge badge-triangle"></div>
             <div class="card-label">DINOSAUR<br>SIGN LANGUAGE</div>
-        </div>
-        <div class="menu-card con-theme" onclick="startLevel('construction')">
+        </button>
+        <button class="menu-card con-theme" onclick="startLevel('construction')">
             <div class="shape-badge badge-square"></div>
             <div class="card-label">CONSTRUCTION<br>COUNTING</div>
-        </div>
+        </button>
     </div>
 
     <!-- LEVEL 1: MONSTER TRUCKS -->
@@ -289,7 +295,6 @@
     let currentDinoTarget = {};
     let currentCountTarget = 0;
 
-    // Static target datasets utilizing internal CSS colors rather than broken image file urls
     const dinos = [
         { word: "More", color: "#ff00ff", aslColor: "#ff00ff", voice: "More! Give me more!" },
         { word: "Eat", color: "#ffcc00", aslColor: "#ffcc00", voice: "Eat! I am hungry." },
@@ -304,11 +309,10 @@
             utterance.rate = 0.80;
             utterance.pitch = 1.1; 
             window.speechSynthesis.speak(utterance);
-        }
-    }
-
-    function addStar() {
-        starScore++;
+}
+}
+function addStar() {
+starScore++;
 document.getElementById('star-count').innerText = ■ ${starScore} STARS;
 speakText("Awesome! You got a star!");
 }
