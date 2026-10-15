@@ -95,12 +95,24 @@
         .menu-card.dino-theme { border-color: var(--dino-green); }
         .menu-card.con-theme { border-color: var(--sky-blue); }
 
-        .card-img {
-            width: 90px;
-            height: 90px;
-            margin-bottom: 20px;
-            image-rendering: pixelated;
+        /* Pure CSS High-Visibility Shape Badges */
+        .shape-badge {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        .badge-circle { background: var(--bright-orange); border-radius: 50%; }
+        .badge-triangle { 
+            width: 0; height: 0; 
+            border-left: 40px solid transparent; 
+            border-right: 40px solid transparent; 
+            border-bottom: 75px solid var(--dino-green); 
+        }
+        .badge-square { background: var(--sky-blue); border-radius: 8px; }
 
         .card-label {
             font-size: 1.2rem;
@@ -121,6 +133,7 @@
             background: #08080c;
             border-radius: 10px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
@@ -128,9 +141,14 @@
             border: 2px solid #222;
         }
 
-        .view-panel img {
-            height: 140px;
-            image-rendering: pixelated;
+        .large-display-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .asl-display {
@@ -138,11 +156,10 @@
             top: 15px;
             right: 15px;
             background: #ffffff;
-            padding: 8px;
             border-radius: 8px;
             border: 3px solid var(--dino-green);
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
         }
 
         .action-grid {
@@ -158,7 +175,7 @@
             border: 3px solid #ffffff;
             border-radius: 12px;
             color: #ffffff;
-            padding: 15px 10px;
+            padding: 20px 10px;
             font-size: 1.1rem;
             font-weight: bold;
             font-family: inherit;
@@ -175,11 +192,12 @@
             box-shadow: 0 2px 0 #000;
         }
 
-        .btn-img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 8px;
-            image-rendering: pixelated;
+        .btn-indicator {
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin-bottom: 10px;
         }
 
         #home-btn {
@@ -207,18 +225,18 @@
 <div id="main-stage">
     <button id="home-btn" onclick="returnToMenu()">← GO BACK</button>
 
-    <!-- Main Entry Screen -->
+    <!-- Main Entry Screen Grid Selection -->
     <div id="menu-screen">
         <div class="menu-card truck-theme" onclick="startLevel('trucks')">
-            <img class="card-img" src="https://icons8.com" alt="Truck">
+            <div class="shape-badge badge-circle"></div>
             <div class="card-label">MONSTER TRUCK<br>SOUNDS</div>
         </div>
         <div class="menu-card dino-theme" onclick="startLevel('dinos')">
-            <img class="card-img" src="https://icons8.com" alt="Dino">
+            <div class="shape-badge badge-triangle"></div>
             <div class="card-label">DINOSAUR<br>SIGN LANGUAGE</div>
         </div>
         <div class="menu-card con-theme" onclick="startLevel('construction')">
-            <img class="card-img" src="https://icons8.com" alt="Crane">
+            <div class="shape-badge badge-square"></div>
             <div class="card-label">CONSTRUCTION<br>COUNTING</div>
         </div>
     </div>
@@ -226,24 +244,25 @@
     <!-- LEVEL 1: MONSTER TRUCKS -->
     <div id="level-trucks" class="game-view">
         <div class="view-panel" id="truck-viewport">
-            <img src="https://icons8.com" alt="Monster Truck Main">
+            <div class="large-display-box" style="background: var(--bright-orange);"></div>
+            <h2 id="truck-status-text" style="margin-top:15px; letter-spacing:1px;">READY TO RUMBLE</h2>
         </div>
         <div class="action-grid">
             <button class="big-touch-btn" style="border-color:var(--bright-orange);" onclick="playPhonics('Ah', '💨 Vroom Ah!')">
-                <img class="btn-img" src="https://icons8.com">
+                <div class="btn-indicator"></div>
                 <span>SPEAK "Ah"</span>
             </button>
             <button class="big-touch-btn" style="border-color:var(--bright-orange);" onclick="playPhonics('Oh', '💥 Crash Oh!')">
-                <img class="btn-img" src="https://icons8.com">
+                <div class="btn-indicator"></div>
                 <span>SPEAK "Oh"</span>
             </button>
             <button class="big-touch-btn" style="border-color:var(--bright-orange);" onclick="playPhonics('Eee', '⚡ Screech Eee!')">
-                <img class="btn-img" src="https://icons8.com">
+                <div class="btn-indicator"></div>
                 <span>SPEAK "Eee"</span>
             </button>
             <button class="big-touch-btn" style="border-color:var(--bright-orange);" onclick="playPhonics('Vroom', '🔥 VROOM VROOM!')">
-                <img class="btn-img" src="https://icons8.com">
-                <span>TRUCK ENGINE</span>
+                <div class="btn-indicator" style="background:red;"></div>
+                <span>ENGINE REV</span>
             </button>
         </div>
     </div>
@@ -251,15 +270,15 @@
     <!-- LEVEL 2: DINOSAURS -->
     <div id="level-dinos" class="game-view">
         <div class="view-panel">
-            <img id="dino-character" src="https://icons8.com">
-            <img class="asl-display" id="asl-cue" src="">
+            <div class="large-display-box" id="dino-center-badge" style="background: var(--dino-green);"></div>
+            <div class="asl-display" id="asl-cue-panel"></div>
         </div>
         <div class="action-grid" id="dino-choices"></div>
     </div>
 
     <!-- LEVEL 3: CONSTRUCTION ZONE -->
     <div id="level-construction" class="game-view">
-        <div class="view-panel" id="construction-viewport" style="gap:15px;"></div>
+        <div class="view-panel" id="construction-viewport" style="gap:20px; flex-direction:row;"></div>
         <div class="action-grid" id="construction-choices"></div>
     </div>
 </div>
@@ -270,12 +289,12 @@
     let currentDinoTarget = {};
     let currentCountTarget = 0;
 
-    // Direct web-hosted visual assets for the ASL concept blocks
+    // Static target datasets utilizing internal CSS colors rather than broken image file urls
     const dinos = [
-        { word: "More", img: "https://icons8.com", asl: "https://icons8.com", voice: "More dinosaur! Give me more!" },
-        { word: "Eat", img: "https://icons8.com", asl: "https://icons8.com", voice: "Eat! The dinosaur is hungry." },
-        { word: "Stop", img: "https://icons8.com", asl: "https://icons8.com", voice: "Stop! Dinosaur says stop." },
-        { word: "Help", img: "https://icons8.com", asl: "https://icons8.com", voice: "Help the tiny dinosaur!" }
+        { word: "More", color: "#ff00ff", aslColor: "#ff00ff", voice: "More! Give me more!" },
+        { word: "Eat", color: "#ffcc00", aslColor: "#ffcc00", voice: "Eat! I am hungry." },
+        { word: "Stop", color: "#ff3333", aslColor: "#ff3333", voice: "Stop! Hold on right there." },
+        { word: "Help", color: "#00ffff", aslColor: "#00ffff", voice: "Help! Thank you for helping." }
     ];
 
     function speakText(text) {
@@ -290,17 +309,16 @@
 
     function addStar() {
         starScore++;
-        document.getElementById('star-count').innerText = `■ ${starScore} STARS`;
-        speakText("Awesome! You got a star!");
-    }
-
-    function startLevel(type) {
-        document.getElementById('menu-screen').style.display = 'none';
-        document.getElementById('home-btn').style.display = 'block';
-        activeLevel = `level-${type}`;
+document.getElementById('star-count').innerText = ■ ${starScore} STARS;
+speakText("Awesome! You got a star!");
+}
+function startLevel(type) {
+document.getElementById('menu-screen').style.display = 'none';
+document.getElementById('home-btn').style.display = 'block';
+activeLevel = level-${type};
 document.getElementById(activeLevel).style.display = 'flex';
 if (type === 'trucks') {
-speakText("Monster truck rally! Press a big button to make the truck bounce!");
+speakText("Monster truck sounds! Press a big button to speak.");
 } else if (type === 'dinos') {
 setupDinoQuestion();
 } else if (type === 'construction') {
@@ -317,8 +335,9 @@ window.speechSynthesis.cancel();
 }
 function playPhonics(sound, completeExpression) {
 speakText(sound);
+document.getElementById('truck-status-text').innerText = completeExpression.toUpperCase();
 const vp = document.getElementById('truck-viewport');
-vp.style.transform = "translateY(-20px)";
+vp.style.transform = "translateY(-15px)";
 setTimeout(() => {
 vp.style.transform = "none";
 speakText(completeExpression);
@@ -326,17 +345,18 @@ speakText(completeExpression);
 }
 function setupDinoQuestion() {
 dinoTarget = dinos[Math.floor(Math.random() * dinos.length)];
-document.getElementById('asl-cue').src = dinoTarget.asl;
-speakText(Find the word ${dinoTarget.word});
+document.getElementById('asl-cue-panel').style.backgroundColor = dinoTarget.aslColor;
+speakText(Find the color matching block for ${dinoTarget.word});
 const grid = document.getElementById('dino-choices');
 grid.innerHTML = "";
 dinos.forEach(item => {
 const btn = document.createElement('button');
 btn.className = 'big-touch-btn';
 btn.style.borderColor = "var(--dino-green)";
-btn.innerHTML = <img class="btn-img" src="${item.img}"><span>${item.word.toUpperCase()}</span>;
+btn.innerHTML = <div style="width:30px; height:30px; background:${item.color}; border-radius:4px; margin-bottom:8px;"></div><span>${item.word.toUpperCase()}</span>;
 btn.onclick = () => {
 if (item.word === dinoTarget.word) {
+document.getElementById('dino-center-badge').style.backgroundColor = dinoTarget.color;
 speakText(dinoTarget.voice);
 addStar();
 setTimeout(setupDinoQuestion, 2000);
@@ -352,23 +372,26 @@ countTarget = Math.floor(Math.random() * 4) + 1;
 const viewport = document.getElementById('construction-viewport');
 viewport.innerHTML = "";
 for(let i = 0; i < countTarget; i++) {
-const img = document.createElement('img');
-img.src = "icons8.com";
-img.style.cursor = "pointer";
-img.onclick = (e) => {
+const block = document.createElement('div');
+block.style.width = "60px";
+block.style.height = "60px";
+block.style.backgroundColor = "var(--sky-blue)";
+block.style.borderRadius = "6px";
+block.style.cursor = "pointer";
+block.onclick = (e) => {
 e.stopPropagation();
 speakText(${i + 1});
 };
-viewport.appendChild(img);
+viewport.appendChild(block);
 }
-speakText("How many trucks do you see?");
+speakText("How many blocks do you see?");
 const choicesGrid = document.getElementById('construction-choices');
 choicesGrid.innerHTML = "";
 for(let num = 1; num <= 4; num++) {
 const btn = document.createElement('button');
 btn.className = 'big-touch-btn';
 btn.style.borderColor = "var(--sky-blue)";
-btn.innerHTML = <span style="font-size:1.8rem; margin-bottom:5px;">${num}</span>;
+btn.innerHTML = <span style="font-size:1.6rem;">${num}</span>;
 btn.onclick = () => {
 if(num === countTarget) {
 viewport.innerHTML = "GREAT JOB!";
@@ -376,7 +399,7 @@ speakText(Exactly ${countTarget}!);
 addStar();
 setTimeout(setupConstructionQuestion, 2500);
 } else {
-speakText("Count them together! Tap each truck.");
+speakText("Let's count together! Tap each block.");
 }
 };
 choicesGrid.appendChild(btn);
