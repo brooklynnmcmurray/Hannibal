@@ -12,7 +12,6 @@
             --mud-brown: #1e1e24;
             --card-bg: #111116;
         }
-
         body {
             background-color: var(--mud-brown);
             color: #ffffff;
@@ -25,7 +24,6 @@
             min-height: 100vh;
             user-select: none;
         }
-
         header {
             width: 95%;
             max-width: 950px;
@@ -39,20 +37,17 @@
             margin-bottom: 20px;
             box-sizing: border-box;
         }
-
         .title-text {
             font-size: 1.6rem;
             color: var(--sky-blue);
             font-weight: bold;
             letter-spacing: 2px;
         }
-
         .star-tracker {
             font-size: 1.6rem;
             color: #ffd700;
             font-weight: bold;
         }
-
         #main-stage {
             width: 95%;
             max-width: 950px;
@@ -66,14 +61,12 @@
             padding: 25px;
             box-sizing: border-box;
         }
-
         #menu-screen {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             width: 100%;
         }
-
         button.menu-card {
             background: var(--card-bg);
             border: 3px solid #444;
@@ -88,14 +81,11 @@
             color: #ffffff;
             transition: transform 0.2s;
         }
-
         button.menu-card:hover { transform: scale(1.03); }
         button.menu-card:active { transform: scale(0.98); }
-
         button.menu-card.truck-theme { border-color: var(--bright-orange); }
         button.menu-card.dino-theme { border-color: var(--dino-green); }
         button.menu-card.con-theme { border-color: var(--sky-blue); }
-
         .shape-badge {
             width: 80px;
             height: 80px;
@@ -104,7 +94,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .badge-circle { background: var(--bright-orange); border-radius: 50%; }
         .badge-triangle { 
             width: 0; height: 0; 
@@ -113,7 +102,6 @@
             border-bottom: 75px solid var(--dino-green); 
         }
         .badge-square { background: var(--sky-blue); border-radius: 8px; }
-
         .card-label {
             font-size: 1.2rem;
             font-weight: bold;
@@ -121,13 +109,11 @@
             letter-spacing: 1px;
             line-height: 1.4;
         }
-
         .game-view {
             display: none;
             flex-direction: column;
             width: 100%;
         }
-
         .view-panel {
             height: 220px;
             background: #08080c;
@@ -140,7 +126,6 @@
             margin-bottom: 25px;
             border: 2px solid #222;
         }
-
         .large-display-box {
             width: 100px;
             height: 100px;
@@ -150,7 +135,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .asl-display {
             position: absolute;
             top: 15px;
@@ -161,7 +145,6 @@
             width: 80px;
             height: 80px;
         }
-
         .action-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -169,7 +152,6 @@
             width: 100%;
             margin-top: auto;
         }
-
         .big-touch-btn {
             background: #11111e;
             border: 3px solid #ffffff;
@@ -186,12 +168,10 @@
             align-items: center;
             box-shadow: 0 5px 0 #000;
         }
-
         .big-touch-btn:active {
             transform: translateY(3px);
             box-shadow: 0 2px 0 #000;
         }
-
         .btn-indicator {
             width: 20px;
             height: 20px;
@@ -199,7 +179,6 @@
             border-radius: 50%;
             margin-bottom: 10px;
         }
-
         #home-btn {
             background: #ff3333;
             border: 2px solid #fff;
@@ -216,15 +195,12 @@
     </style>
 </head>
 <body>
-
 <header>
     <div class="title-text">■ HANNIBAL'S PLAYROOM</div>
     <div class="star-tracker" id="star-count">■ 0 STARS</div>
 </header>
-
 <div id="main-stage">
     <button id="home-btn" onclick="returnToMenu()">← GO BACK</button>
-
     <div id="menu-screen">
         <button class="menu-card truck-theme" onclick="startLevel('trucks')">
             <div class="shape-badge badge-circle"></div>
@@ -239,8 +215,6 @@
             <div class="card-label">CONSTRUCTION<br>COUNTING</div>
         </button>
     </div>
-
-    <!-- STAGE SCREEN CHANNELS -->
     <div id="level-trucks" class="game-view">
         <div class="view-panel" id="truck-viewport">
             <div class="large-display-box" style="background: var(--bright-orange);"></div>
@@ -265,7 +239,6 @@
             </button>
         </div>
     </div>
-
     <div id="level-dinos" class="game-view">
         <div class="view-panel">
             <div class="large-display-box" id="dino-center-badge" style="background: var(--dino-green);"></div>
@@ -273,139 +246,98 @@
         </div>
         <div class="action-grid" id="dino-choices"></div>
     </div>
-
     <div id="level-construction" class="game-view">
         <div class="view-panel" id="construction-viewport" style="gap:20px; flex-direction:row;"></div>
         <div class="action-grid" id="construction-choices"></div>
     </div>
 </div>
-
 <script>
-    let starScore = 0;
-    let activeLevel = "";
-    let currentDinoTarget = {};
-    let currentCountTarget = 0;
-
+    let starScore = 0, activeLevel = "", currentDinoTarget = {}, currentCountTarget = 0;
     const dinos = [
         { word: "More", color: "#ff00ff", aslColor: "#ff00ff", voice: "More! Give me more!" },
         { word: "Eat", color: "#ffcc00", aslColor: "#ffcc00", voice: "Eat! I am hungry." },
         { word: "Stop", color: "#ff3333", aslColor: "#ff3333", voice: "Stop! Hold on right there." },
         { word: "Help", color: "#00ffff", aslColor: "#00ffff", voice: "Help! Thank you for helping." }
     ];
-
     function speakText(text) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.80;
-            utterance.pitch = 1.1; 
+            utterance.rate = 0.80; utterance.pitch = 1.1; 
             window.speechSynthesis.speak(utterance);
         }
     }
-
     function addStar() {
-        starScore++;
-        document.getElementById('star-count').innerText = `■ ${starScore} STARS`;
-        speakText("Awesome! You got a star!");
+        starScore++; document.getElementById('star-count').innerText = `■ ${starScore} STARS`; speakText("Awesome! You got a star!");
     }
-
-// Fixed Engine Routing Logic Declarations
-function startLevel(type) {
-document.getElementById('menu-screen').style.display = 'none';
-document.getElementById('home-btn').style.display = 'block';
-// Safety wipe old display blocks
-document.getElementById('level-trucks').style.display = 'none';
-document.getElementById('level-dinos').style.display = 'none';
-document.getElementById('level-construction').style.display = 'none';
-activeLevel = level-${type};
-document.getElementById(activeLevel).style.display = 'flex';
-if (type === 'trucks') {
-speakText("Monster truck sounds! Press a big button to speak.");
-} else if (type === 'dinos') {
-setupDinoQuestion();
-} else if (type === 'construction') {
-setupConstructionQuestion();
-}
-}
-window.startLevel = startLevel;
-function returnToMenu() {
-if(activeLevel) {
-document.getElementById(activeLevel).style.display = 'none';
-}
-document.getElementById('home-btn').style.display = 'none';
-document.getElementById('menu-screen').style.display = 'grid';
-window.speechSynthesis.cancel();
-}
-window.returnToMenu = returnToMenu;
-function playPhonics(sound, completeExpression) {
-speakText(sound);
-document.getElementById('truck-status-text').innerText = completeExpression.toUpperCase();
-const vp = document.getElementById('truck-viewport');
-vp.style.transform = "translateY(-15px)";
-setTimeout(() => {
-vp.style.transform = "none";
-speakText(completeExpression);
-}, 300);
-}
-function setupDinoQuestion() {
-dinoTarget = dinos[Math.floor(Math.random() * dinos.length)];
-document.getElementById('asl-cue-panel').style.backgroundColor = dinoTarget.aslColor;
-speakText(Find the color matching block for ${dinoTarget.word});
-const grid = document.getElementById('dino-choices');
-grid.innerHTML = "";
-dinos.forEach(item => {
-const btn = document.createElement('button');
-btn.className = 'big-touch-btn';
-btn.style.borderColor = "var(--dino-green)";
-btn.innerHTML = <div style="width:30px; height:30px; background:${item.color}; border-radius:4px; margin-bottom:8px;"></div><span>${item.word.toUpperCase()}</span>;
-btn.onclick = () => {
-if (item.word === dinoTarget.word) {
-document.getElementById('dino-center-badge').style.backgroundColor = dinoTarget.color;
-speakText(dinoTarget.voice);
-addStar();
-setTimeout(setupDinoQuestion, 2000);
-} else {
-speakText(Try again! Find ${dinoTarget.word});
-}
-};
-grid.appendChild(btn);
-});
-}
-function setupConstructionQuestion() {
-countTarget = Math.floor(Math.random() * 4) + 1;
-const viewport = document.getElementById('construction-viewport');
-viewport.innerHTML = "";
-for(let i = 0; i < countTarget; i++) {
-const block = document.createElement('div');
-block.style.width = "60px";
-block.style.height = "60px";
-block.style.backgroundColor = "var(--sky-blue)";
-block.style.borderRadius = "6px";
-block.style.cursor = "pointer";
-block.onclick = (e) => {
-e.stopPropagation();
-speakText(${i + 1});
-};
-viewport.appendChild(block);
-}
-speakText("How many blocks do you see?");
-const choicesGrid = document.getElementById('construction-choices');
-choicesGrid.innerHTML = "";
-for(let num = 1; num <= 4; num++) {
-const btn = document.createElement('button');
-btn.className = 'big-touch-btn';
-btn.style.borderColor = "var(--sky-blue)";
-btn.innerHTML = <span style="font-size:1.6rem;">${num}</span>;
-btn.onclick = () => {
-if(num === countTarget) {
-viewport.innerHTML = "GREAT JOB!";
-speakText(Exactly ${countTarget}!);
-addStar();
-setTimeout(setupConstructionQuestion, 2500);
-} else {
-speakText("Let's count together! Tap each block.");
-}
-};
-choicesGrid.appendChild(btn);
-}
-}
+    function startLevel(type) {
+        document.getElementById('menu-screen').style.display = 'none';
+        document.getElementById('home-btn').style.display = 'block';
+        document.getElementById('level-trucks').style.display = 'none';
+        document.getElementById('level-dinos').style.display = 'none';
+        document.getElementById('level-construction').style.display = 'none';
+        activeLevel = `level-${type}`;
+        document.getElementById(activeLevel).style.display = 'flex';
+        if (type === 'trucks') { speakText("Monster truck sounds! Press a big button to speak."); }
+        else if (type === 'dinos') { setupDinoQuestion(); }
+        else if (type === 'construction') { setupConstructionQuestion(); }
+    }
+    function returnToMenu() {
+        if(activeLevel) { document.getElementById(activeLevel).style.display = 'none'; }
+        document.getElementById('home-btn').style.display = 'none';
+        document.getElementById('menu-screen').style.display = 'grid';
+        window.speechSynthesis.cancel();
+    }
+    function playPhonics(sound, completeExpression) {
+        speakText(sound);
+        document.getElementById('truck-status-text').innerText = completeExpression.toUpperCase();
+        const vp = document.getElementById('truck-viewport');
+        vp.style.transform = "translateY(-15px)";
+        setTimeout(() => { vp.style.transform = "none"; speakText(completeExpression); }, 300);
+    }
+    function setupDinoQuestion() {
+        dinoTarget = dinos[Math.floor(Math.random() * dinos.length)];
+        document.getElementById('asl-cue-panel').style.backgroundColor = dinoTarget.aslColor;
+        speakText(`Find the color matching block for ${dinoTarget.word}`);
+        const grid = document.getElementById('dino-choices'); grid.innerHTML = "";
+        dinos.forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = 'big-touch-btn'; btn.style.borderColor = "var(--dino-green)";
+            btn.innerHTML = `<div style="width:30px; height:30px; background:${item.color}; border-radius:4px; margin-bottom:8px;"></div><span>${item.word.toUpperCase()}</span>`;
+            btn.onclick = () => {
+                if (item.word === dinoTarget.word) {
+                    document.getElementById('dino-center-badge').style.backgroundColor = dinoTarget.color;
+                    speakText(dinoTarget.voice); addStar(); setTimeout(setupDinoQuestion, 2000);
+                } else { speakText(`Try again! Find ${dinoTarget.word}`); }
+            };
+            grid.appendChild(btn);
+        });
+    }
+    function setupConstructionQuestion() {
+        countTarget = Math.floor(Math.random() * 4) + 1;
+        const viewport = document.getElementById('construction-viewport'); viewport.innerHTML = "";
+        for(let i = 0; i < countTarget; i++) {
+            const block = document.createElement('div');
+            block.style.width = "60px"; block.style.height = "60px"; block.style.backgroundColor = "var(--sky-blue)";
+            block.style.borderRadius = "6px"; block.style.cursor = "pointer";
+            block.onclick = (e) => { e.stopPropagation(); speakText(`${i + 1}`); };
+            viewport.appendChild(block);
+        }
+        speakText("How many blocks do you see?");
+        const choicesGrid = document.getElementById('construction-choices'); choicesGrid.innerHTML = "";
+        for(let num = 1; num <= 4; num++) {
+            const btn = document.createElement('button');
+            btn.className = 'big-touch-btn'; btn.style.borderColor = "var(--sky-blue)";
+            btn.innerHTML = `<span style="font-size:1.6rem;">${num}</span>`;
+            btn.onclick = () => {
+                if(num === countTarget) {
+                    viewport.innerHTML = "<h2 style='color:var(--sky-blue); font-size:2rem;'>GREAT JOB!</h2>";
+                    speakText(`Exactly ${countTarget}!`); addStar(); setTimeout(setupConstructionQuestion, 2500);
+                } else { speakText("Let's count together! Tap each block."); }
+            };
+            choicesGrid.appendChild(btn);
+        }
+    }
+</script>
+</body>
+</html>
