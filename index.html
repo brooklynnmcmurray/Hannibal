@@ -74,7 +74,6 @@
             width: 100%;
         }
 
-        /* CHANGED: Swapped cards to authentic HTML button behaviors */
         button.menu-card {
             background: var(--card-bg);
             border: 3px solid #444;
@@ -90,13 +89,8 @@
             transition: transform 0.2s;
         }
 
-        button.menu-card:hover {
-            transform: scale(1.03);
-        }
-
-        button.menu-card:active {
-            transform: scale(0.98);
-        }
+        button.menu-card:hover { transform: scale(1.03); }
+        button.menu-card:active { transform: scale(0.98); }
 
         button.menu-card.truck-theme { border-color: var(--bright-orange); }
         button.menu-card.dino-theme { border-color: var(--dino-green); }
@@ -231,7 +225,6 @@
 <div id="main-stage">
     <button id="home-btn" onclick="returnToMenu()">← GO BACK</button>
 
-    <!-- Main Entry Screen Grid Selection -->
     <div id="menu-screen">
         <button class="menu-card truck-theme" onclick="startLevel('trucks')">
             <div class="shape-badge badge-circle"></div>
@@ -247,7 +240,7 @@
         </button>
     </div>
 
-    <!-- LEVEL 1: MONSTER TRUCKS -->
+    <!-- STAGE SCREEN CHANNELS -->
     <div id="level-trucks" class="game-view">
         <div class="view-panel" id="truck-viewport">
             <div class="large-display-box" style="background: var(--bright-orange);"></div>
@@ -273,7 +266,6 @@
         </div>
     </div>
 
-    <!-- LEVEL 2: DINOSAURS -->
     <div id="level-dinos" class="game-view">
         <div class="view-panel">
             <div class="large-display-box" id="dino-center-badge" style="background: var(--dino-green);"></div>
@@ -282,7 +274,6 @@
         <div class="action-grid" id="dino-choices"></div>
     </div>
 
-    <!-- LEVEL 3: CONSTRUCTION ZONE -->
     <div id="level-construction" class="game-view">
         <div class="view-panel" id="construction-viewport" style="gap:20px; flex-direction:row;"></div>
         <div class="action-grid" id="construction-choices"></div>
@@ -309,16 +300,23 @@
             utterance.rate = 0.80;
             utterance.pitch = 1.1; 
             window.speechSynthesis.speak(utterance);
-}
-}
-function addStar() {
-starScore++;
-document.getElementById('star-count').innerText = ■ ${starScore} STARS;
-speakText("Awesome! You got a star!");
-}
+        }
+    }
+
+    function addStar() {
+        starScore++;
+        document.getElementById('star-count').innerText = `■ ${starScore} STARS`;
+        speakText("Awesome! You got a star!");
+    }
+
+// Fixed Engine Routing Logic Declarations
 function startLevel(type) {
 document.getElementById('menu-screen').style.display = 'none';
 document.getElementById('home-btn').style.display = 'block';
+// Safety wipe old display blocks
+document.getElementById('level-trucks').style.display = 'none';
+document.getElementById('level-dinos').style.display = 'none';
+document.getElementById('level-construction').style.display = 'none';
 activeLevel = level-${type};
 document.getElementById(activeLevel).style.display = 'flex';
 if (type === 'trucks') {
@@ -329,6 +327,7 @@ setupDinoQuestion();
 setupConstructionQuestion();
 }
 }
+window.startLevel = startLevel;
 function returnToMenu() {
 if(activeLevel) {
 document.getElementById(activeLevel).style.display = 'none';
@@ -337,6 +336,7 @@ document.getElementById('home-btn').style.display = 'none';
 document.getElementById('menu-screen').style.display = 'grid';
 window.speechSynthesis.cancel();
 }
+window.returnToMenu = returnToMenu;
 function playPhonics(sound, completeExpression) {
 speakText(sound);
 document.getElementById('truck-status-text').innerText = completeExpression.toUpperCase();
